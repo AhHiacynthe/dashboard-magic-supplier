@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Overview from '@/components/Dashboard/Overview';
+import DashboardNav from '@/components/Dashboard/DashboardNav';
 import { Card, CardContent } from '@/components/ui/card';
 import { ShoppingCart, Users, TrendingUp, Activity } from 'lucide-react';
 
@@ -57,24 +57,10 @@ const Index = () => {
             <h1 className="text-3xl font-bold text-app-dark">Tableau de bord</h1>
             <p className="text-app-muted mt-2">Bienvenue sur votre espace de gestion</p>
           </div>
-          
-          <div className="mt-4 md:mt-0 flex space-x-4">
-            <Link 
-              to="/commands" 
-              className="px-4 py-2 bg-app-primary text-white rounded-lg shadow-sm hover:bg-blue-700 transition-colors"
-            >
-              <ShoppingCart className="inline-block w-4 h-4 mr-2" />
-              Commandes
-            </Link>
-            <Link 
-              to="/suppliers" 
-              className="px-4 py-2 bg-white text-app-dark border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
-            >
-              <Users className="inline-block w-4 h-4 mr-2" />
-              Fournisseurs
-            </Link>
-          </div>
         </div>
+        
+        {/* Menu de navigation */}
+        <DashboardNav />
         
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -107,7 +93,7 @@ const Index = () => {
           })}
         </div>
         
-        {/* Overview Section */}
+        {/* Overview Section - maintenant en bas */}
         <Overview />
       </main>
     </div>
