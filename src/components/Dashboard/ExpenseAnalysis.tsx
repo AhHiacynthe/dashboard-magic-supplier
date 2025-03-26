@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 interface MonthData {
   month: string;
@@ -22,6 +22,17 @@ const monthlyData: MonthData[] = [
   { month: 'Nov', expenses: 7000, budget: 7000 },
   { month: 'Déc', expenses: 7200, budget: 7000 },
 ];
+
+// Données pour le graphique en camembert des dépenses par catégorie
+const categoryData = [
+  { name: 'Équipement', value: 35000 },
+  { name: 'Fournitures', value: 25000 },
+  { name: 'Services', value: 18000 },
+  { name: 'Logiciels', value: 12000 },
+  { name: 'Autres', value: 10000 },
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 const ExpenseAnalysis = () => {
   const totalExpenses = monthlyData.reduce((sum, item) => sum + item.expenses, 0);
@@ -49,7 +60,8 @@ const ExpenseAnalysis = () => {
         </div>
       </div>
       
-      <div className="h-64 animate-slide-up opacity-0" style={{ animationDelay: '0.3s' }}>
+      <div className="h-64 mb-8 animate-slide-up opacity-0" style={{ animationDelay: '0.3s' }}>
+        <h4 className="text-md font-medium text-app-dark mb-2">Évolution mensuelle</h4>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={monthlyData}
@@ -103,6 +115,38 @@ const ExpenseAnalysis = () => {
               </linearGradient>
             </defs>
           </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      
+      {/* Nouveau graphique pour les dépenses par catégorie */}
+      <div className="h-72 animate-slide-up opacity-0" style={{ animationDelay: '0.5s' }}>
+        <h4 className="text-md font-medium text-app-dark mb-2">Dépenses par catégorie</h4>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={categoryData}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              outerRadius={80}
+              fill="#8884d8"
+              dataKey="value"
+              label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
+            >
+              {categoryData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip 
+              formatter={(value) => formatter.format(Number(value))}
+              contentStyle={{ 
+                borderRadius: '8px', 
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', 
+                border: 'none' 
+              }}
+            />
+            <Legend />
+          </PieChart>
         </ResponsiveContainer>
       </div>
     </div>
