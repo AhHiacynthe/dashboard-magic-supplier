@@ -1,8 +1,8 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Overview from '@/components/Dashboard/Overview';
-import DashboardNav from '@/components/Dashboard/DashboardNav';
 import { Card, CardContent } from '@/components/ui/card';
 import { ShoppingCart, Users, TrendingUp, Activity } from 'lucide-react';
 
@@ -59,8 +59,20 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Menu de navigation */}
-        <DashboardNav />
+        {/* Menu de navigation déplacé ici */}
+        <div className="w-full mb-8 bg-white rounded-xl shadow-soft p-4">
+          <div className="flex flex-wrap gap-4">
+            <Link to="/commands" className="inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-app-primary focus:bg-gray-100 focus:text-app-primary focus:outline-none">
+              <ShoppingCart className="mr-2 h-5 w-5" />
+              <span>Commandes</span>
+            </Link>
+            
+            <Link to="/suppliers" className="inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-app-primary focus:bg-gray-100 focus:text-app-primary focus:outline-none">
+              <Users className="mr-2 h-5 w-5" />
+              <span>Fournisseurs</span>
+            </Link>
+          </div>
+        </div>
         
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
