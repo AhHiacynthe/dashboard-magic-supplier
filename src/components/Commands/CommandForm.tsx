@@ -19,13 +19,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CheckCircle2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2, Eye } from 'lucide-react';
+import { Textarea } from "@/components/ui/textarea";
 
 interface FormValues {
   reference: string;
   supplier: string;
-  date: string;
+  orderDate: string;
+  deliveryDate: string;
   amount: string;
+  department: string;
   description: string;
   status: string;
 }
@@ -36,8 +39,10 @@ const CommandForm = () => {
   const [values, setValues] = useState<FormValues>({
     reference: '',
     supplier: '',
-    date: new Date().toISOString().substring(0, 10),
+    orderDate: new Date().toISOString().substring(0, 10),
+    deliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10),
     amount: '',
+    department: '',
     description: '',
     status: 'pending'
   });
@@ -72,13 +77,19 @@ const CommandForm = () => {
         setValues({
           reference: '',
           supplier: '',
-          date: new Date().toISOString().substring(0, 10),
+          orderDate: new Date().toISOString().substring(0, 10),
+          deliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10),
           amount: '',
+          department: '',
           description: '',
           status: 'pending'
         });
       }, 2000);
     }, 1500);
+  };
+
+  const handleViewStatus = () => {
+    toast.info(`Statut actuel: ${values.status === 'pending' ? 'En attente' : values.status === 'processing' ? 'En cours' : 'Complétée'}`);
   };
 
   return (
@@ -93,7 +104,7 @@ const CommandForm = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="reference">Référence</Label>
+              <Label htmlFor="reference">Numéro de commande</Label>
               <Input
                 id="reference"
                 name="reference"
@@ -124,12 +135,25 @@ const CommandForm = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="date">Date</Label>
+              <Label htmlFor="orderDate">Date de commande</Label>
               <Input
-                id="date"
-                name="date"
+                id="orderDate"
+                name="orderDate"
                 type="date"
-                value={values.date}
+                value={values.orderDate}
+                onChange={handleChange}
+                required
+                className="focus:ring-app-primary"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="deliveryDate">Date de livraison</Label>
+              <Input
+                id="deliveryDate"
+                name="deliveryDate"
+                type="date"
+                value={values.deliveryDate}
                 onChange={handleChange}
                 required
                 className="focus:ring-app-primary"
@@ -152,20 +176,51 @@ const CommandForm = () => {
               />
             </div>
             
+            <div className="space-y-2">
+              <Label htmlFor="department">Département</Label>
+              <Select 
+                name="department" 
+                value={values.department}
+                onValueChange={(value) => handleSelectChange('department', value)}
+              >
+                <SelectTrigger className="focus:ring-app-primary">
+                  <SelectValue placeholder="Sélectionner un département" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="IT">Informatique</SelectItem>
+                  <SelectItem value="HR">Ressources Humaines</SelectItem>
+                  <SelectItem value="Finance">Finance</SelectItem>
+                  <SelectItem value="Marketing">Marketing</SelectItem>
+                  <SelectItem value="Operations">Opérations</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="description">Description</Label>
-              <Input
+              <Textarea
                 id="description"
                 name="description"
                 placeholder="Description de la commande..."
                 value={values.description}
                 onChange={handleChange}
-                className="focus:ring-app-primary"
+                className="focus:ring-app-primary min-h-[100px]"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="status">Statut</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="status">Statut</Label>
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleViewStatus}
+                  className="h-8 w-8 p-0"
+                >
+                  <Eye className="h-4 w-4" />
+                </Button>
+              </div>
               <Select 
                 name="status" 
                 value={values.status}
