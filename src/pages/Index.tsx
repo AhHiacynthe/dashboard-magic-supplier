@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Overview from '@/components/Dashboard/Overview';
 import { Card, CardContent } from '@/components/ui/card';
 import { ShoppingCart, Users, TrendingUp, Activity } from 'lucide-react';
+import LoadingSpinnerDemo from '@/components/LoadingSpinnerDemo';
 
 const Index = () => {
   // Sample stats data
@@ -103,6 +103,11 @@ const Index = () => {
               </Link>
             );
           })}
+        </div>
+        
+        {/* Loading Spinner Demo */}
+        <div className="mb-8">
+          <LoadingSpinnerDemo />
         </div>
         
         {/* Overview Section - maintenant en bas */}
